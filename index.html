@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SFF PC Mini-ITX Case Clearance & Compatibility Checker</title>
+    <meta name="description" content="Calculate physical millimeter spacing clearances for popular Mini-ITX cases like the Fractal Terra and A4-H2O. Check GPU and AIO radiator layout sizing configurations instantly.">
+    <meta name="keywords" content="Mini-ITX clearance checker, Fractal Terra GPU compatibility, liquid cooling AIO radiator thickness calculation, SFF PC builder toolkit">
+    <link rel="canonical" href="https://yourdomain.com">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --border: #334155;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            margin-top: 0;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .grid-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-inputs { grid-template-columns: 1fr; }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        select:focus {
+            border-color: var(--accent);
+        }
+
+        .results-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 5px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .status-pass {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .status-fail {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .metric-box {
+            background-color: rgba(15, 23, 42, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .metric-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .fan-badge {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 4px;
+            background-color: var(--accent);
+            color: var(--bg-color);
+        }
+
+        .ad-space {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: rgba(56, 189, 248, 0.05);
+            border: 1px dashed var(--accent);
+            border-radius: 8px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🛠️ SFF PC Clearance & AIO Checker</h1>
+        <p class="subtitle">Millimeter compatibility and fan optimization for Small Form Factor systems</p>
+    </header>
+
+    <!-- INPUT SELECTIONS -->
+    <div class="card">
+        <div class="form-group">
+            <label for="caseSelect">1. Select Mini-ITX Case</label>
+            <select id="caseSelect">
+                <option value="terra">Fractal Terra (Mid-Spine Config)</option>
+                <option value="nr200">Cooler Master NR200</option>
+                <option value="a4h2o">Lian Li A4-H2O (AIO Optimized Layout)</option>
+                <option value="ridge">Fractal Ridge (Console Layout)</option>
+                <option value="era2">Fractal Era 2 (Airflow Dual-Chamber)</option>
+                <option value="ch160">DeepCool CH160 (Budget Mini-Tower)</option>
+            </select>
+        </div>
+
+        <div class="grid-inputs">
+            <div class="form-group">
+                <label for="coolerSelect">2. CPU Cooler / Liquid AIO</label>
+                <select id="coolerSelect">
+                    <option value="axp90">Thermalright AXP90-X47 (47mm Air Cooler)</option>
+                    <option value="nh-l12s">Noctua NH-L12S (70mm Air Cooler)</option>
+                    <option value="ek240aio">EK-Nucleus CR240 (240mm AIO / 27mm Thick Rad)</option>
+                    <option value="ls520">DeepCool LS520 (240mm AIO / 27mm Thick Rad)</option>
+                    <option value="arctic240">Arctic Liquid Freezer III 240 (240mm AIO / 38mm Thick Rad)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="gpuSelect">3. Graphics Card (GPU)</label>
+                <select id="gpuSelect">
+                    <option value="rtx4070fe">NVIDIA RTX 4070 FE (244mm Len / 40mm Thick)</option>
+                    <option value="proart4070ti">ASUS ProArt RTX 4070 Ti (300mm Len / 50mm Thick)</option>
+                    <option value="rtx5090fe">NVIDIA RTX 5090 FE (340mm Len / 74mm Thick)</option>
+                    <option value="rtx5070ti">NVIDIA RTX 5070 Ti Ref (300mm Len / 50mm Thick)</option>
+                    <option value="rx7900xtx">AMD Radeon RX 7900 XTX (287mm Len / 51mm Thick)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIVE CONFIGURATION VERDICT -->
+    <div class="card">
+        <div class="results-header">Clearance Verdict</div>
+        <div id="statusBadge" class="status-badge status-pass">VERIFIED COMPATIBLE</div>
+
+        <div class="metric-grid">
+            <div class="metric-box">
+                <div class="metric-title">CPU Cooler / Radiator Clearance</div>
+                <div id="cpuResult" class="metric-value">--</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-title">Optimal Fan Architecture Type</div>
+                <div id="fanRecommendation" class="metric-value">--</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-title">GPU Max Length Margin</div>
+                <div id="gpuLengthResult" class="metric-value">--</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-title">GPU Max Thickness Margin</div>
+                <div id="gpuThicknessResult" class="metric-value">--</div>
+            </div>
+        </div>
+
+        <div style="margin-top: 15px; padding: 10px; border-radius: 6px; background: rgba(15, 23, 42, 0.3);">
+            <div id="generalNotes" style="font-size: 14px; font-weight: 500; color: var(--success);">All checks pass.</div>
+        </div>
+    </div>
+
+    <div class="ad-space" aria-hidden="true">
+        Sponsored Layout Block<br>
+        <span style="font-size: 10px;">(Paste your programmatic ad tags here)</span>
+    </div>
+</div>
+
+<script>
+    // CASE CAPABILITIES DATASET
+    const cases = {
+        terra:  { maxCooler: 60,  maxGpuLen: 322, maxGpuThick: 55, supportsAio: false, maxRadThick: 0,  fanType: "exhaust-only", name: "Fractal Terra" },
+        nr200:  { maxCooler: 155, maxGpuLen: 330, maxGpuThick: 60, supportsAio: true,  maxRadThick: 40, fanType: "airflow",      name: "Cooler Master NR200" },
+        a4h2o:  { maxCooler: 55,  maxGpuLen: 322, maxGpuThick: 60, supportsAio: true,  maxRadThick: 30, fanType: "airflow",      name: "Lian Li A4-H2O" },
+        ridge:  { maxCooler: 70,  maxGpuLen: 335, maxGpuThick: 82, supportsAio: false, maxRadThick: 0,  fanType: "airflow",      name: "Fractal Ridge" },
+        era2:   { maxCooler: 63,  maxGpuLen: 326, maxGpuThick: 62, supportsAio: true,  maxRadThick: 30, fanType: "airflow",      name: "Fractal Era 2" },
+        ch160:  { maxCooler: 172, maxGpuLen: 305, maxGpuThick: 65, supportsAio: false, maxRadThick: 0,  fanType: "airflow",      name: "DeepCool CH160" }
+    };
+
+    // COOLER AND RADIATOR DIMENSIONS
+    const coolers = {
+        axp90:      { height: 47, isAio: false, radThickness: 0,  name: "Thermalright AXP90-X47" },
+        "nh-l12s":  { height: 70, isAio: false, radThickness: 0,  name: "Noctua NH-L12S" },
+        ek240aio:   { height: 53, isAio: true,  radThickness: 27, name: "EK-Nucleus 240" },
+        ls520:      { height: 52, isAio: true,  radThickness: 27, name: "DeepCool LS520" },
+        arctic240:  { height: 53, isAio: true,  radThickness: 38, name: "Arctic Liquid Freezer III" }
+    };
+
+    // GPU COMPONENT DIMENSIONS
+    const gpus = {
+        rtx4070fe:    { length: 244, thickness: 40, name: "RTX 4070 FE" },
+        proart4070ti: { length: 300, thickness: 50, name: "ProArt RTX 4070 Ti" },
+        rtx5090fe:    { length: 340, thickness: 74, name: "RTX 5090 FE" },
+        rtx5070ti:    { length: 300, thickness: 50, name: "RTX 5070 Ti" },
+        rx7900xtx:    { length: 287, thickness: 51, name: "RX 7900 XTX" }
+    };
+
+    function calculateClearance() {
+        const selectedCase   = cases[document.getElementById('caseSelect').value];
+        const selectedCooler = coolers[document.getElementById('coolerSelect').value];
+        const selectedGpu    = gpus[document.getElementById('gpuSelect').value];
+
+        let cpuMargin = 0;
+        let isAioBrick = false;
+        let aioThicknessConflict = false;
+
+        if (selectedCooler.isAio) {
+            if (!selectedCase.supportsAio) {
+                isAioBrick = true;
+                // cpuMargin stays 0 — isAioBrick handles the verdict independently
+            } else {
+                cpuMargin = selectedCase.maxRadThick - selectedCooler.radThickness;
+                if (cpuMargin < 0) {
+                    aioThicknessConflict = true;
+                }
+            }
+        } else {
+            cpuMargin = selectedCase.maxCooler - selectedCooler.height;
+        }
+
+        const gpuLengthMargin    = selectedCase.maxGpuLen   - selectedGpu.length;
+        const gpuThicknessMargin = selectedCase.maxGpuThick - selectedGpu.thickness;
+
+        if (selectedCooler.isAio && selectedCase.supportsAio) {
+            document.getElementById('cpuResult').textContent = `${cpuMargin >= 0 ? '+' : ''}${cpuMargin}mm Rad Clearance`;
+        } else if (isAioBrick) {
+            document.getElementById('cpuResult').textContent = "No AIO Bracket";
+        } else {
+            document.getElementById('cpuResult').textContent = `${cpuMargin >= 0 ? '+' : ''}${cpuMargin}mm Air Cooler`;
+        }
+
+        document.getElementById('gpuLengthResult').textContent    = `${gpuLengthMargin >= 0 ? '+' : ''}${gpuLengthMargin}mm`;
+        document.getElementById('gpuThicknessResult').textContent = `${gpuThicknessMargin >= 0 ? '+' : ''}${gpuThicknessMargin}mm`;
+
+        // Fan recommendation — built via DOM, no innerHTML
+        const fanBox = document.getElementById('fanRecommendation');
+        fanBox.textContent = '';
+
+        let fanLabel, fanBadge;
+        if (selectedCooler.isAio) {
+            fanLabel = "Static Pressure";
+            fanBadge = "High Pushing Force Needed";
+        } else if (selectedCase.fanType === "exhaust-only") {
+            fanLabel = "Airflow Optimized";
+            fanBadge = "Case Mesh Exhaust Only";
+        } else {
+            fanLabel = "High Airflow Fan";
+            fanBadge = "Max CFM Urged";
+        }
+
+        fanBox.appendChild(document.createTextNode(fanLabel));
+        fanBox.appendChild(document.createElement('br'));
+        const badge = document.createElement('span');
+        badge.className = 'fan-badge';
+        badge.textContent = fanBadge;
+        fanBox.appendChild(badge);
+
+        // VERDICT
+        const verdictBadge = document.getElementById('statusBadge');
+        const notes = document.getElementById('generalNotes');
+
+        if (cpuMargin < 0 || gpuLengthMargin < 0 || gpuThicknessMargin < 0 || isAioBrick || aioThicknessConflict) {
+            verdictBadge.textContent = "INCOMPATIBLE";
+            verdictBadge.className = "status-badge status-fail";
+
+            const issues = [];
+            if (isAioBrick) issues.push(`The ${selectedCase.name} does not have mounting locations for water cooling radiators.`);
+            if (aioThicknessConflict) issues.push(`Radiator is too thick (${selectedCooler.radThickness}mm). Max allowed in ${selectedCase.name} is ${selectedCase.maxRadThick}mm.`);
+            if (!selectedCooler.isAio && cpuMargin < 0) issues.push("The selected air cooler height exceeds the case clearance limit.");
+            if (gpuLengthMargin < 0) issues.push("GPU is too long for this case.");
+            if (gpuThicknessMargin < 0) issues.push("GPU is too thick for this case.");
+
+            notes.textContent = "🚨 Conflicts: " + issues.join(" ");
+            notes.style.color = "var(--danger)";
+        } else {
+            verdictBadge.textContent = "VERIFIED COMPATIBLE";
+            verdictBadge.className = "status-badge status-pass";
+            notes.textContent = "✅ Excellent fit. This configuration leaves clean spatial margins for natural thermal convection.";
+            notes.style.color = "var(--success)";
+        }
+    }
+
+    // BUG FIX 5: event listeners instead of inline onchange handlers
+    document.getElementById('caseSelect').addEventListener('change', calculateClearance);
+    document.getElementById('coolerSelect').addEventListener('change', calculateClearance);
+    document.getElementById('gpuSelect').addEventListener('change', calculateClearance);
+
+    // Run on initial load
+    calculateClearance();
+</script>
+
+</body>
+</html>
