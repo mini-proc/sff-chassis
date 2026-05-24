@@ -186,12 +186,7 @@
         <div class="form-group">
             <label for="caseSelect">1. Select Mini-ITX Case</label>
             <select id="caseSelect">
-                <option value="terra">Fractal Terra (Mid-Spine Config)</option>
-                <option value="nr200">Cooler Master NR200</option>
-                <option value="a4h2o">Lian Li A4-H2O (AIO Optimized Layout)</option>
-                <option value="ridge">Fractal Ridge (Console Layout)</option>
-                <option value="era2">Fractal Era 2 (Airflow Dual-Chamber)</option>
-                <option value="ch160">DeepCool CH160 (Budget Mini-Tower)</option>
+                <option value="">Loading...</option>
             </select>
         </div>
 
@@ -199,22 +194,14 @@
             <div class="form-group">
                 <label for="coolerSelect">2. CPU Cooler / Liquid AIO</label>
                 <select id="coolerSelect">
-                    <option value="axp90">Thermalright AXP90-X47 (47mm Air Cooler)</option>
-                    <option value="nh-l12s">Noctua NH-L12S (70mm Air Cooler)</option>
-                    <option value="ek240aio">EK-Nucleus CR240 (240mm AIO / 27mm Thick Rad)</option>
-                    <option value="ls520">DeepCool LS520 (240mm AIO / 27mm Thick Rad)</option>
-                    <option value="arctic240">Arctic Liquid Freezer III 240 (240mm AIO / 38mm Thick Rad)</option>
+                    <option value="">Loading...</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="gpuSelect">3. Graphics Card (GPU)</label>
                 <select id="gpuSelect">
-                    <option value="rtx4070fe">NVIDIA RTX 4070 FE (244mm Len / 40mm Thick)</option>
-                    <option value="proart4070ti">ASUS ProArt RTX 4070 Ti (300mm Len / 50mm Thick)</option>
-                    <option value="rtx5090fe">NVIDIA RTX 5090 FE (340mm Len / 74mm Thick)</option>
-                    <option value="rtx5070ti">NVIDIA RTX 5070 Ti Ref (300mm Len / 50mm Thick)</option>
-                    <option value="rx7900xtx">AMD Radeon RX 7900 XTX (287mm Len / 51mm Thick)</option>
+                    <option value="">Loading...</option>
                 </select>
             </div>
         </div>
@@ -256,38 +243,45 @@
 </div>
 
 <script>
-    // CASE CAPABILITIES DATASET
-    const cases = {
-        terra:  { maxCooler: 60,  maxGpuLen: 322, maxGpuThick: 55, supportsAio: false, maxRadThick: 0,  fanType: "exhaust-only", name: "Fractal Terra" },
-        nr200:  { maxCooler: 155, maxGpuLen: 330, maxGpuThick: 60, supportsAio: true,  maxRadThick: 40, fanType: "airflow",      name: "Cooler Master NR200" },
-        a4h2o:  { maxCooler: 55,  maxGpuLen: 322, maxGpuThick: 60, supportsAio: true,  maxRadThick: 30, fanType: "airflow",      name: "Lian Li A4-H2O" },
-        ridge:  { maxCooler: 70,  maxGpuLen: 335, maxGpuThick: 82, supportsAio: false, maxRadThick: 0,  fanType: "airflow",      name: "Fractal Ridge" },
-        era2:   { maxCooler: 63,  maxGpuLen: 326, maxGpuThick: 62, supportsAio: true,  maxRadThick: 30, fanType: "airflow",      name: "Fractal Era 2" },
-        ch160:  { maxCooler: 172, maxGpuLen: 305, maxGpuThick: 65, supportsAio: false, maxRadThick: 0,  fanType: "airflow",      name: "DeepCool CH160" }
-    };
+    // Global data store — populated from data.json
+    let appData = null;
 
-    // COOLER AND RADIATOR DIMENSIONS
-    const coolers = {
-        axp90:      { height: 47, isAio: false, radThickness: 0,  name: "Thermalright AXP90-X47" },
-        "nh-l12s":  { height: 70, isAio: false, radThickness: 0,  name: "Noctua NH-L12S" },
-        ek240aio:   { height: 53, isAio: true,  radThickness: 27, name: "EK-Nucleus 240" },
-        ls520:      { height: 52, isAio: true,  radThickness: 27, name: "DeepCool LS520" },
-        arctic240:  { height: 53, isAio: true,  radThickness: 38, name: "Arctic Liquid Freezer III" }
-    };
+    // Populate a select element from a data category
+    function populateSelect(selectId, items, labelFn) {
+        const select = document.getElementById(selectId);
+        select.textContent = '';
+        Object.entries(items).forEach(([key, item]) => {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = labelFn(item);
+            select.appendChild(option);
+        });
+    }
 
-    // GPU COMPONENT DIMENSIONS
-    const gpus = {
-        rtx4070fe:    { length: 244, thickness: 40, name: "RTX 4070 FE" },
-        proart4070ti: { length: 300, thickness: 50, name: "ProArt RTX 4070 Ti" },
-        rtx5090fe:    { length: 340, thickness: 74, name: "RTX 5090 FE" },
-        rtx5070ti:    { length: 300, thickness: 50, name: "RTX 5070 Ti" },
-        rx7900xtx:    { length: 287, thickness: 51, name: "RX 7900 XTX" }
-    };
+    // Build dropdown option labels from data fields
+    function caseLabel(c) {
+        return `${c.name}`;
+    }
+
+    function coolerLabel(c) {
+        if (c.isAio) {
+            return `${c.name} (${c.radSize}mm AIO / ${c.radThickness}mm Thick Rad)`;
+        }
+        return `${c.name} (${c.height}mm Air Cooler)`;
+    }
+
+    function gpuLabel(g) {
+        return `${g.name} (${g.length}mm Len / ${g.thickness}mm Thick)`;
+    }
 
     function calculateClearance() {
-        const selectedCase   = cases[document.getElementById('caseSelect').value];
-        const selectedCooler = coolers[document.getElementById('coolerSelect').value];
-        const selectedGpu    = gpus[document.getElementById('gpuSelect').value];
+        if (!appData) return;
+
+        const selectedCase   = appData.cases[document.getElementById('caseSelect').value];
+        const selectedCooler = appData.coolers[document.getElementById('coolerSelect').value];
+        const selectedGpu    = appData.gpus[document.getElementById('gpuSelect').value];
+
+        if (!selectedCase || !selectedCooler || !selectedGpu) return;
 
         let cpuMargin = 0;
         let isAioBrick = false;
@@ -298,18 +292,19 @@
                 isAioBrick = true;
                 // cpuMargin stays 0 — isAioBrick handles the verdict independently
             } else {
-                cpuMargin = selectedCase.maxRadThick - selectedCooler.radThickness;
+                cpuMargin = selectedCase.maxRadThickness - selectedCooler.radThickness;
                 if (cpuMargin < 0) {
                     aioThicknessConflict = true;
                 }
             }
         } else {
-            cpuMargin = selectedCase.maxCooler - selectedCooler.height;
+            cpuMargin = selectedCase.maxCoolerHeight - selectedCooler.height;
         }
 
-        const gpuLengthMargin    = selectedCase.maxGpuLen   - selectedGpu.length;
-        const gpuThicknessMargin = selectedCase.maxGpuThick - selectedGpu.thickness;
+        const gpuLengthMargin    = selectedCase.maxGpuLength    - selectedGpu.length;
+        const gpuThicknessMargin = selectedCase.maxGpuThickness - selectedGpu.thickness;
 
+        // CPU / Radiator result
         if (selectedCooler.isAio && selectedCase.supportsAio) {
             document.getElementById('cpuResult').textContent = `${cpuMargin >= 0 ? '+' : ''}${cpuMargin}mm Rad Clearance`;
         } else if (isAioBrick) {
@@ -339,10 +334,10 @@
 
         fanBox.appendChild(document.createTextNode(fanLabel));
         fanBox.appendChild(document.createElement('br'));
-        const badge = document.createElement('span');
-        badge.className = 'fan-badge';
-        badge.textContent = fanBadge;
-        fanBox.appendChild(badge);
+        const fanBadgeEl = document.createElement('span');
+        fanBadgeEl.className = 'fan-badge';
+        fanBadgeEl.textContent = fanBadge;
+        fanBox.appendChild(fanBadgeEl);
 
         // VERDICT
         const verdictBadge = document.getElementById('statusBadge');
@@ -354,7 +349,7 @@
 
             const issues = [];
             if (isAioBrick) issues.push(`The ${selectedCase.name} does not have mounting locations for water cooling radiators.`);
-            if (aioThicknessConflict) issues.push(`Radiator is too thick (${selectedCooler.radThickness}mm). Max allowed in ${selectedCase.name} is ${selectedCase.maxRadThick}mm.`);
+            if (aioThicknessConflict) issues.push(`Radiator is too thick (${selectedCooler.radThickness}mm). Max allowed in ${selectedCase.name} is ${selectedCase.maxRadThickness}mm.`);
             if (!selectedCooler.isAio && cpuMargin < 0) issues.push("The selected air cooler height exceeds the case clearance limit.");
             if (gpuLengthMargin < 0) issues.push("GPU is too long for this case.");
             if (gpuThicknessMargin < 0) issues.push("GPU is too thick for this case.");
@@ -369,13 +364,32 @@
         }
     }
 
-    // BUG FIX 5: event listeners instead of inline onchange handlers
+    // Event listeners
     document.getElementById('caseSelect').addEventListener('change', calculateClearance);
     document.getElementById('coolerSelect').addEventListener('change', calculateClearance);
     document.getElementById('gpuSelect').addEventListener('change', calculateClearance);
 
-    // Run on initial load
-    calculateClearance();
+    // Load data.json and initialize the tool
+    fetch('data.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to load data.json — HTTP ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            appData = data;
+            populateSelect('caseSelect',   data.cases,   caseLabel);
+            populateSelect('coolerSelect', data.coolers, coolerLabel);
+            populateSelect('gpuSelect',    data.gpus,    gpuLabel);
+            calculateClearance();
+        })
+        .catch(err => {
+            console.error(err);
+            const notes = document.getElementById('generalNotes');
+            notes.textContent = '⚠️ Could not load component data. Make sure data.json is in the same folder as index.html.';
+            notes.style.color = 'var(--warning)';
+        });
 </script>
 
 </body>
