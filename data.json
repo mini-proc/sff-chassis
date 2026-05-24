@@ -1,0 +1,236 @@
+{
+    "meta": {
+        "version": "1.0.0",
+        "lastUpdated": "2026-05-24",
+        "notes": "All dimensions in millimeters unless otherwise stated."
+    },
+
+    "cases": {
+        "terra": {
+            "name": "Fractal Terra",
+            "brand": "Fractal",
+            "formFactor": "Mini-ITX",
+            "status": "available",
+            "useCase": ["gaming", "workstation"],
+            "maxCoolerHeight": 60,
+            "maxGpuLength": 322,
+            "maxGpuThickness": 55,
+            "supportsAio": false,
+            "maxRadThickness": 0,
+            "maxRadSize": null,
+            "fanType": "exhaust-only",
+            "lastVerified": "2026-05-24",
+            "source": "fractal-design.com"
+        },
+        "nr200": {
+            "name": "Cooler Master NR200",
+            "brand": "Cooler Master",
+            "formFactor": "Mini-ITX",
+            "status": "available",
+            "useCase": ["gaming", "workstation"],
+            "maxCoolerHeight": 155,
+            "maxGpuLength": 330,
+            "maxGpuThickness": 60,
+            "supportsAio": true,
+            "maxRadThickness": 40,
+            "maxRadSize": 240,
+            "fanType": "airflow",
+            "lastVerified": "2026-05-24",
+            "source": "coolermaster.com"
+        },
+        "a4h2o": {
+            "name": "Lian Li A4-H2O",
+            "brand": "Lian Li",
+            "formFactor": "Mini-ITX",
+            "status": "available",
+            "useCase": ["gaming", "workstation"],
+            "maxCoolerHeight": 55,
+            "maxGpuLength": 322,
+            "maxGpuThickness": 60,
+            "supportsAio": true,
+            "maxRadThickness": 30,
+            "maxRadSize": 240,
+            "fanType": "airflow",
+            "lastVerified": "2026-05-24",
+            "source": "lian-li.com"
+        },
+        "ridge": {
+            "name": "Fractal Ridge",
+            "brand": "Fractal",
+            "formFactor": "Mini-ITX",
+            "status": "available",
+            "useCase": ["gaming", "workstation"],
+            "maxCoolerHeight": 70,
+            "maxGpuLength": 335,
+            "maxGpuThickness": 82,
+            "supportsAio": false,
+            "maxRadThickness": 0,
+            "maxRadSize": null,
+            "fanType": "airflow",
+            "lastVerified": "2026-05-24",
+            "source": "fractal-design.com"
+        },
+        "era2": {
+            "name": "Fractal Era 2",
+            "brand": "Fractal",
+            "formFactor": "Mini-ITX",
+            "status": "available",
+            "useCase": ["gaming", "workstation"],
+            "maxCoolerHeight": 63,
+            "maxGpuLength": 326,
+            "maxGpuThickness": 62,
+            "supportsAio": true,
+            "maxRadThickness": 30,
+            "maxRadSize": 240,
+            "fanType": "airflow",
+            "lastVerified": "2026-05-24",
+            "source": "fractal-design.com"
+        },
+        "ch160": {
+            "name": "DeepCool CH160",
+            "brand": "DeepCool",
+            "formFactor": "Mini-ITX",
+            "status": "available",
+            "useCase": ["gaming", "workstation"],
+            "maxCoolerHeight": 172,
+            "maxGpuLength": 305,
+            "maxGpuThickness": 65,
+            "supportsAio": false,
+            "maxRadThickness": 0,
+            "maxRadSize": null,
+            "fanType": "airflow",
+            "lastVerified": "2026-05-24",
+            "source": "deepcool.com"
+        }
+    },
+
+    "coolers": {
+        "axp90": {
+            "name": "Thermalright AXP90-X47",
+            "brand": "Thermalright",
+            "type": "air",
+            "height": 47,
+            "isAio": false,
+            "radThickness": 0,
+            "radSize": null,
+            "lowProfileRamRequired": false,
+            "status": "available",
+            "lastVerified": "2026-05-24",
+            "source": "thermalright.com"
+        },
+        "nh-l12s": {
+            "name": "Noctua NH-L12S",
+            "brand": "Noctua",
+            "type": "air",
+            "height": 70,
+            "isAio": false,
+            "radThickness": 0,
+            "radSize": null,
+            "lowProfileRamRequired": true,
+            "status": "available",
+            "lastVerified": "2026-05-24",
+            "source": "noctua.at"
+        },
+        "ek240aio": {
+            "name": "EK-Nucleus CR240",
+            "brand": "EK",
+            "type": "aio",
+            "height": 53,
+            "isAio": true,
+            "radThickness": 27,
+            "radSize": 240,
+            "lowProfileRamRequired": false,
+            "status": "available",
+            "lastVerified": "2026-05-24",
+            "source": "ekwb.com"
+        },
+        "ls520": {
+            "name": "DeepCool LS520",
+            "brand": "DeepCool",
+            "type": "aio",
+            "height": 52,
+            "isAio": true,
+            "radThickness": 27,
+            "radSize": 240,
+            "lowProfileRamRequired": false,
+            "status": "available",
+            "lastVerified": "2026-05-24",
+            "source": "deepcool.com"
+        },
+        "arctic240": {
+            "name": "Arctic Liquid Freezer III 240",
+            "brand": "Arctic",
+            "type": "aio",
+            "height": 53,
+            "isAio": true,
+            "radThickness": 38,
+            "radSize": 240,
+            "lowProfileRamRequired": false,
+            "status": "available",
+            "lastVerified": "2026-05-24",
+            "source": "arctic.de"
+        }
+    },
+
+    "gpus": {
+        "rtx4070fe": {
+            "name": "NVIDIA RTX 4070 FE",
+            "brand": "NVIDIA",
+            "partner": null,
+            "length": 244,
+            "thickness": 40,
+            "slots": 2,
+            "status": "available",
+            "lastVerified": "2026-05-24",
+            "source": "nvidia.com"
+        },
+        "proart4070ti": {
+            "name": "ASUS ProArt RTX 4070 Ti",
+            "brand": "ASUS",
+            "partner": "NVIDIA",
+            "length": 300,
+            "thickness": 50,
+            "slots": 3,
+            "status": "available",
+            "lastVerified": "2026-05-24",
+            "source": "asus.com"
+        },
+        "rtx5090fe": {
+            "name": "NVIDIA RTX 5090 FE",
+            "brand": "NVIDIA",
+            "partner": null,
+            "length": 340,
+            "thickness": 74,
+            "slots": 3,
+            "status": "available",
+            "lastVerified": "2026-05-24",
+            "source": "nvidia.com"
+        },
+        "rtx5070ti": {
+            "name": "NVIDIA RTX 5070 Ti FE",
+            "brand": "NVIDIA",
+            "partner": null,
+            "length": 300,
+            "thickness": 50,
+            "slots": 2,
+            "status": "available",
+            "lastVerified": "2026-05-24",
+            "source": "nvidia.com"
+        },
+        "rx7900xtx": {
+            "name": "AMD Radeon RX 7900 XTX",
+            "brand": "AMD",
+            "partner": null,
+            "length": 287,
+            "thickness": 51,
+            "slots": 3,
+            "status": "available",
+            "lastVerified": "2026-05-24",
+            "source": "amd.com"
+        }
+    },
+
+    "fans": {},
+
+    "ram": {}
+}
