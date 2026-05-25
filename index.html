@@ -190,16 +190,23 @@
             </select>
         </div>
 
+        <div class="form-group" id="configGroup" style="display: none;">
+            <label for="configSelect">2. Case Configuration</label>
+            <select id="configSelect">
+                <option value="">Select configuration...</option>
+            </select>
+        </div>
+
         <div class="grid-inputs">
             <div class="form-group">
-                <label for="coolerSelect">2. CPU Cooler / Liquid AIO</label>
+                <label for="coolerSelect">3. CPU Cooler / Liquid AIO</label>
                 <select id="coolerSelect">
                     <option value="">Loading...</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="gpuSelect">3. Graphics Card (GPU)</label>
+                <label for="gpuSelect">4. Graphics Card (GPU)</label>
                 <select id="gpuSelect">
                     <option value="">Loading...</option>
                 </select>
@@ -274,6 +281,36 @@
         return `${g.brand} ${g.name} (${g.length}mm Len / ${g.thickness}mm Thick)`;
     }
 
+    // Return the max GPU width allowed for a given GPU height in a configuration
+    function getMaxGpuWidth(config, gpuHeight) {
+        for (const tier of config.gpuWidthTiers) {
+            if (gpuHeight <= tier.maxGpuHeight) {
+                return tier.maxGpuWidth;
+            }
+        }
+        return 0; // GPU height exceeds all tiers — incompatible
+    }
+
+    // Show or hide the configuration dropdown depending on whether the case has configurations
+    function updateConfigDropdown(selectedCase) {
+        const configGroup = document.getElementById('configGroup');
+        const configSelect = document.getElementById('configSelect');
+
+        if (selectedCase && selectedCase.configurations) {
+            configGroup.style.display = 'block';
+            configSelect.textContent = '';
+            Object.entries(selectedCase.configurations).forEach(([key, config]) => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = config.label;
+                configSelect.appendChild(option);
+            });
+        } else {
+            configGroup.style.display = 'none';
+            configSelect.textContent = '';
+        }
+    }
+
     function calculateClearance() {
         if (!appData) return;
 
@@ -282,6 +319,16 @@
         const selectedGpu    = appData.gpus[document.getElementById('gpuSelect').value];
 
         if (!selectedCase || !selectedCooler || !selectedGpu) return;
+
+        // Resolve active dimensions — use selected configuration if available, else case directly
+        let dims;
+        if (selectedCase.configurations) {
+            const configKey = document.getElementById('configSelect').value;
+            dims = selectedCase.configurations[configKey];
+            if (!dims) return;
+        } else {
+            dims = selectedCase;
+        }
 
         let cpuMargin = 0;
         let isAioBrick = false;
@@ -298,11 +345,25 @@
                 }
             }
         } else {
-            cpuMargin = selectedCase.maxCoolerHeight - selectedCooler.height;
+            cpuMargin = dims.maxCoolerHeight - selectedCooler.height;
         }
 
-        const gpuLengthMargin    = selectedCase.maxGpuLength    - selectedGpu.length;
-        const gpuThicknessMargin = selectedCase.maxGpuThickness - selectedGpu.thickness;
+        const gpuLengthMargin = dims.maxGpuLength - selectedGpu.length;
+
+        // GPU width/thickness check — tiered if configuration has tiers, flat otherwise
+        let gpuThicknessMargin;
+        let gpuHeightExceeded = false;
+        if (dims.gpuWidthTiers) {
+            if (selectedGpu.height > dims.maxGpuHeight) {
+                gpuHeightExceeded = true;
+                gpuThicknessMargin = -1;
+            } else {
+                const maxWidth = getMaxGpuWidth(dims, selectedGpu.height);
+                gpuThicknessMargin = maxWidth - selectedGpu.thickness;
+            }
+        } else {
+            gpuThicknessMargin = dims.maxGpuThickness - selectedGpu.thickness;
+        }
 
         // CPU / Radiator result
         if (selectedCooler.isAio && selectedCase.supportsAio) {
@@ -343,7 +404,7 @@
         const verdictBadge = document.getElementById('statusBadge');
         const notes = document.getElementById('generalNotes');
 
-        if (cpuMargin < 0 || gpuLengthMargin < 0 || gpuThicknessMargin < 0 || isAioBrick || aioThicknessConflict) {
+        if (cpuMargin < 0 || gpuLengthMargin < 0 || gpuThicknessMargin < 0 || isAioBrick || aioThicknessConflict || gpuHeightExceeded) {
             verdictBadge.textContent = "INCOMPATIBLE";
             verdictBadge.className = "status-badge status-fail";
 
@@ -352,7 +413,8 @@
             if (aioThicknessConflict) issues.push(`Radiator is too thick (${selectedCooler.radThickness}mm). Max allowed in ${selectedCase.name} is ${selectedCase.maxRadThickness}mm.`);
             if (!selectedCooler.isAio && cpuMargin < 0) issues.push("The selected air cooler height exceeds the case clearance limit.");
             if (gpuLengthMargin < 0) issues.push("GPU is too long for this case.");
-            if (gpuThicknessMargin < 0) issues.push("GPU is too thick for this case.");
+            if (gpuHeightExceeded) issues.push(`GPU height (${selectedGpu.height}mm) exceeds the maximum allowed in this configuration (${dims.maxGpuHeight}mm).`);
+            if (!gpuHeightExceeded && gpuThicknessMargin < 0) issues.push("GPU is too thick for this case in the selected configuration.");
 
             notes.textContent = "🚨 Conflicts: " + issues.join(" ");
             notes.style.color = "var(--danger)";
@@ -364,8 +426,16 @@
         }
     }
 
+    // When case changes, update config dropdown then recalculate
+    function onCaseChange() {
+        const selectedCase = appData.cases[document.getElementById('caseSelect').value];
+        updateConfigDropdown(selectedCase);
+        calculateClearance();
+    }
+
     // Event listeners
-    document.getElementById('caseSelect').addEventListener('change', calculateClearance);
+    document.getElementById('caseSelect').addEventListener('change', onCaseChange);
+    document.getElementById('configSelect').addEventListener('change', calculateClearance);
     document.getElementById('coolerSelect').addEventListener('change', calculateClearance);
     document.getElementById('gpuSelect').addEventListener('change', calculateClearance);
 
@@ -382,6 +452,9 @@
             populateSelect('caseSelect',   data.cases,   caseLabel);
             populateSelect('coolerSelect', data.coolers, coolerLabel);
             populateSelect('gpuSelect',    data.gpus,    gpuLabel);
+            // Initialize config dropdown for the default selected case
+            const defaultCase = data.cases[document.getElementById('caseSelect').value];
+            updateConfigDropdown(defaultCase);
             calculateClearance();
         })
         .catch(err => {
