@@ -24,14 +24,8 @@
                     "maxGpuLength": 322,
                     "maxGpuHeight": 145,
                     "gpuWidthTiers": [
-                        {
-                            "maxGpuHeight": 130,
-                            "maxGpuWidth": 72
-                        },
-                        {
-                            "maxGpuHeight": 145,
-                            "maxGpuWidth": 62
-                        }
+                        { "maxGpuHeight": 130, "maxGpuWidth": 72 },
+                        { "maxGpuHeight": 145, "maxGpuWidth": 62 }
                     ]
                 },
                 "maxCpu": {
@@ -40,14 +34,8 @@
                     "maxGpuLength": 322,
                     "maxGpuHeight": 131,
                     "gpuWidthTiers": [
-                        {
-                            "maxGpuHeight": 130,
-                            "maxGpuWidth": 43
-                        },
-                        {
-                            "maxGpuHeight": 131,
-                            "maxGpuWidth": 33
-                        }
+                        { "maxGpuHeight": 130, "maxGpuWidth": 43 },
+                        { "maxGpuHeight": 131, "maxGpuWidth": 33 }
                     ]
                 }
             }
@@ -87,16 +75,32 @@
             "brand": "Fractal Design",
             "formFactor": "Mini-ITX",
             "status": "available",
-            "maxCoolerHeight": 70,
-            "maxGpuLength": 335,
-            "maxGpuThickness": 82,
             "supportsAio": false,
             "maxRadThickness": 0,
             "maxRadSize": null,
             "fanType": "airflow",
             "lastVerified": "2026-05-24",
             "source": "fractal-design.com"
-        },
+            "configurations": {
+                "maxGpu": {
+                    "label": "Max GPU (No Top Fans, No Side Fans, No SSD)",
+                    "maxCoolerHeight": 70,
+                    "maxGpuLength": 335,
+                    "maxGpuHeight": 137,
+                    "gpuWidthTiers": [
+                        { "maxGpuHeight": 137, "maxGpuThickness": 82 }
+                    ]
+                },
+                "standard": {
+                    "label": "Standard (Top Fans + Side Fans + SSD)",
+                    "maxCoolerHeight": 70,
+                    "maxGpuLength": 325,
+                    "maxGpuHeight": 125,
+                    "gpuWidthTiers": [
+                        { "maxGpuHeight": 125, "maxGpuThickness": 57 }
+                    ]
+                }
+            },
         "era2": {
             "name": "Era 2",
             "brand": "Fractal Design",
