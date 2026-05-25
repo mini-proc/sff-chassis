@@ -80,7 +80,7 @@
             "maxRadSize": null,
             "fanType": "airflow",
             "lastVerified": "2026-05-24",
-            "source": "fractal-design.com"
+            "source": "fractal-design.com",
             "configurations": {
                 "maxGpu": {
                     "label": "Max GPU (No Top Fans, No Side Fans, No SSD)",
@@ -100,7 +100,8 @@
                         { "maxGpuHeight": 125, "maxGpuThickness": 57 }
                     ]
                 }
-            },
+            }
+        },
         "era2": {
             "name": "Era 2",
             "brand": "Fractal Design",
