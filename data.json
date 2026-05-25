@@ -22,7 +22,7 @@
             "source": "fractal-design.com"
         },
         "nr200": {
-            "name": "Cooler Master NR200",
+            "name": "NR200",
             "brand": "Cooler Master",
             "formFactor": "Mini-ITX",
             "status": "available",
@@ -37,7 +37,7 @@
             "source": "coolermaster.com"
         },
         "a4h2o": {
-            "name": "Lian Li A4-H2O",
+            "name": "A4-H2O",
             "brand": "Lian Li",
             "formFactor": "Mini-ITX",
             "status": "available",
@@ -52,8 +52,8 @@
             "source": "lian-li.com"
         },
         "ridge": {
-            "name": "Fractal Ridge",
-            "brand": "Fractal",
+            "name": "Ridge",
+            "brand": "Fractal Design",
             "formFactor": "Mini-ITX",
             "status": "available",
             "maxCoolerHeight": 70,
@@ -67,8 +67,8 @@
             "source": "fractal-design.com"
         },
         "era2": {
-            "name": "Fractal Era 2",
-            "brand": "Fractal",
+            "name": "Era 2",
+            "brand": "Fractal Design",
             "formFactor": "Mini-ITX",
             "status": "available",
             "maxCoolerHeight": 63,
@@ -82,7 +82,7 @@
             "source": "fractal-design.com"
         },
         "ch160": {
-            "name": "DeepCool CH160",
+            "name": "CH160",
             "brand": "DeepCool",
             "formFactor": "Mini-ITX",
             "status": "available",
@@ -100,7 +100,7 @@
 
     "coolers": {
         "axp90": {
-            "name": "Thermalright AXP90-X47",
+            "name": "AXP90-X47",
             "brand": "Thermalright",
             "type": "air",
             "height": 47,
@@ -113,7 +113,7 @@
             "source": "thermalright.com"
         },
         "nh-l12s": {
-            "name": "Noctua NH-L12S",
+            "name": "NH-L12S",
             "brand": "Noctua",
             "type": "air",
             "height": 70,
@@ -139,7 +139,7 @@
             "source": "ekwb.com"
         },
         "ls520": {
-            "name": "DeepCool LS520",
+            "name": "LS520",
             "brand": "DeepCool",
             "type": "aio",
             "height": 52,
@@ -152,7 +152,7 @@
             "source": "deepcool.com"
         },
         "arctic240": {
-            "name": "Arctic Liquid Freezer III 240",
+            "name": "Liquid Freezer III 240",
             "brand": "Arctic",
             "type": "aio",
             "height": 53,
@@ -168,7 +168,7 @@
 
     "gpus": {
         "rtx4070fe": {
-            "name": "NVIDIA RTX 4070 FE",
+            "name": "RTX 4070 FE",
             "brand": "NVIDIA",
             "partner": null,
             "length": 244,
@@ -179,7 +179,7 @@
             "source": "nvidia.com"
         },
         "proart4070ti": {
-            "name": "ASUS ProArt RTX 4070 Ti",
+            "name": "ProArt RTX 4070 Ti",
             "brand": "ASUS",
             "partner": "NVIDIA",
             "length": 300,
@@ -190,7 +190,7 @@
             "source": "asus.com"
         },
         "rtx5090fe": {
-            "name": "NVIDIA RTX 5090 FE",
+            "name": "RTX 5090 FE",
             "brand": "NVIDIA",
             "partner": null,
             "length": 340,
@@ -201,7 +201,7 @@
             "source": "nvidia.com"
         },
         "rtx5070ti": {
-            "name": "NVIDIA RTX 5070 Ti FE",
+            "name": "RTX 5070 Ti FE",
             "brand": "NVIDIA",
             "partner": null,
             "length": 300,
@@ -212,7 +212,7 @@
             "source": "nvidia.com"
         },
         "rx7900xtx": {
-            "name": "AMD Radeon RX 7900 XTX",
+            "name": "Radeon RX 7900 XTX",
             "brand": "AMD",
             "partner": null,
             "length": 287,
