@@ -265,13 +265,13 @@
 
     function coolerLabel(c) {
         if (c.isAio) {
-            return `${c.name} (${c.radSize}mm AIO / ${c.radThickness}mm Thick Rad)`;
+            return `${c.brand} ${c.name} (${c.radSize}mm AIO / ${c.radThickness}mm Thick Rad)`;
         }
-        return `${c.name} (${c.height}mm Air Cooler)`;
+        return `${c.brand} ${c.name} (${c.height}mm Air Cooler)`;
     }
 
     function gpuLabel(g) {
-        return `${g.name} (${g.length}mm Len / ${g.thickness}mm Thick)`;
+        return `${g.brand} ${g.name} (${g.length}mm Len / ${g.thickness}mm Thick)`;
     }
 
     function calculateClearance() {
