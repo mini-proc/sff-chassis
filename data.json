@@ -156,7 +156,74 @@
             "source": "deepcool.com"
         }
     },
-
+"era": {
+      "name": "Era",
+      "brand": "Fractal Design",
+      "formFactor": "Mini-ITX",
+      "status": "discontinued",
+      "supportsAio": true,
+      "maxRadSize": 240,
+      "maxRadThickness": 31,
+      "fanType": "airflow",
+      "lastVerified": "2026-05-24",
+      "source": "fractal-design.com",
+      "configurations": {
+        "standard": {
+          "label": "Standard PSU Position",
+          "maxCoolerHeight": 120,
+          "maxGpuLength": 295,
+          "maxGpuHeight": null,
+          "gpuThicknessTiers": []
+        },
+        "sfxl": {
+          "label": "Low-Mounted SFX-L PSU",
+          "maxCoolerHeight": 120,
+          "maxGpuLength": 210,
+          "maxGpuHeight": null,
+          "gpuThicknessTiers": []
+        },
+        "sfx": {
+          "label": "Low-Mounted SFX PSU",
+          "maxCoolerHeight": 120,
+          "maxGpuLength": 190,
+          "maxGpuHeight": null,
+          "gpuThicknessTiers": []
+        }
+      }
+    },
+    "node202": {
+      "name": "Node 202",
+      "brand": "Fractal Design",
+      "formFactor": "Mini-ITX",
+      "status": "discontinued",
+      "supportsAio": false,
+      "maxRadSize": null,
+      "maxRadThickness": 0,
+      "maxCoolerHeight": 56,
+      "maxGpuLength": 310,
+      "maxGpuHeight": 145,
+      "maxGpuThickness": 47,
+      "fanType": "airflow",
+      "lastVerified": "2026-05-24",
+      "source": "fractal-design.com"
+    },
+    "mood": {
+      "name": "Mood",
+      "brand": "Fractal Design",
+      "formFactor": "Mini-ITX",
+      "status": "available",
+      "supportsAio": true,
+      "maxRadSize": null,
+      "maxRadThickness": null,
+      "maxCoolerHeight": 114,
+      "maxGpuLength": 325,
+      "maxGpuHeight": 145,
+      "maxGpuThickness": 56,
+      "fanType": "airflow",
+      "lastVerified": "2026-05-24",
+      "source": "fractal-design.com"
+    }
+  },
     "coolers": {
         "axp90": {
             "name": "AXP90-X47",
