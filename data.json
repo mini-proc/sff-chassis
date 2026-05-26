@@ -107,16 +107,39 @@
             "brand": "Fractal Design",
             "formFactor": "Mini-ITX",
             "status": "available",
-            "maxCoolerHeight": 63,
-            "maxGpuLength": 326,
-            "maxGpuThickness": 62,
             "supportsAio": true,
-            "maxRadThickness": 30,
-            "maxRadSize": 240,
-            "fanType": "airflow",
-            "lastVerified": "2026-05-24",
-            "source": "fractal-design.com"
+            "maxRadSize": 280,
+            "maxRadThickness": 27,
+      "fanType": "airflow",
+      "lastVerified": "2026-05-24",
+      "source": "fractal-design.com",
+      "configurations": {
+        "maxGpu": {
+          "label": "Max GPU (Wall Position A)",
+          "maxCoolerHeight": 55,
+          "maxGpuLength": 326,
+          "maxGpuHeight": 137,
+          "gpuThicknessTiers": [
+            {
+              "maxGpuHeight": 137,
+              "maxGpuThickness": 63
+            }
+          ]
         },
+        "maxCpu": {
+          "label": "Max CPU Cooler (Wall Position B)",
+          "maxCoolerHeight": 70,
+          "maxGpuLength": 326,
+          "maxGpuHeight": 137,
+          "gpuThicknessTiers": [
+            {
+              "maxGpuHeight": 137,
+              "maxGpuThickness": 48
+            }
+          ]
+        }
+      }
+    },
         "ch160": {
             "name": "CH160",
             "brand": "DeepCool",
